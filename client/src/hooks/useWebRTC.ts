@@ -49,6 +49,20 @@ function useWebRTC() {
             }
         };
 
+        peerConnection.current.oniceconnectionstatechange = () => {
+            console.log(
+                "ICE State:",
+                peerConnection.current?.iceConnectionState
+            );
+        };
+
+peerConnection.current.onconnectionstatechange = () => {
+    console.log(
+        "Connection State:",
+        peerConnection.current?.connectionState
+    );
+};
+
 
         peerConnection.current.ontrack = (event) => {
 
