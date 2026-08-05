@@ -11,13 +11,13 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: true,
         methods: ["GET", "POST"]
     }
 });
 
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const rooms ={};
 
