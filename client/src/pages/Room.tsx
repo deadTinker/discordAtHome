@@ -103,9 +103,11 @@ function Room(){
           ...previous,
           data.participant
       ]);
-
+        
+        if (data.participant.socketId !== socket.id){
       // Existing user creates the offer
           await createOffer(roomId!);
+        }
       };
 
       const handleUserLeft = (data: UserLeftEvent) => {
@@ -156,6 +158,9 @@ function Room(){
         socket.off("user-joined", handleUserJoined);
         socket.off("user-left", handleUserLeft);
         socket.off("mic-changed", handleMicChanged);
+        socket.off("offer");
+        socket.off("answer");
+        socket.off("ice-candidate");
       };
 
 
@@ -206,9 +211,7 @@ function Room(){
 
       <br></br>
 
-      < button onClick={() => createOffer(roomId!)}>
-          Create Offer
-      </button>
+    
 
 
       <audio
