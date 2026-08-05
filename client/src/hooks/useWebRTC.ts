@@ -28,9 +28,9 @@ function useWebRTC() {
         
         peerConnection.current = new RTCPeerConnection({
             iceServers: [
-                {
-                    urls: "stun:stun.l.google.com:19302",
-                },
+                { urls: "stun:stun.l.google.com:19302 "},
+                { urls: "stun:stun1.l.google.com:19302" },
+                { urls: "stun:stun2.l.google.com:19302" },
             ],
         });
         
@@ -148,6 +148,7 @@ peerConnection.current.onconnectionstatechange = () => {
         if (!peerConnection.current) return;
 
         const offer = await peerConnection.current.createOffer();
+        console.log(offer.sdp);
 
         await peerConnection.current.setLocalDescription(offer);
 
@@ -165,6 +166,8 @@ peerConnection.current.onconnectionstatechange = () => {
         roomId: string,
         offer: RTCSessionDescriptionInit
     ) => {
+
+        
 
         if (!peerConnection.current) return;
 
@@ -184,6 +187,8 @@ peerConnection.current.onconnectionstatechange = () => {
 
         // Create our answer
         const answer = await peerConnection.current?.createAnswer();
+
+        console.log(answer?.sdp);
 
         // Save itlocally
         await peerConnection.current?.setLocalDescription(answer);
