@@ -28,9 +28,31 @@ function useWebRTC() {
         
         peerConnection.current = new RTCPeerConnection({
             iceServers: [
-                { urls: "stun:stun.l.google.com:19302 "},
-                { urls: "stun:stun1.l.google.com:19302" },
-                { urls: "stun:stun2.l.google.com:19302" },
+                // { urls: "stun:stun.l.google.com:19302 "},
+                // { urls: "stun:stun1.l.google.com:19302" },
+                // { urls: "stun:stun2.l.google.com:19302" },
+                {   urls: "stun:stun.relay.metered.ca:80",
+                },
+                {
+                    urls: "turn:global.relay.metered.ca:80",
+                    username: "ecc177c4ae968f7c9f665b04",
+                    credential: "Ab522JkPxZ+vuRC6",
+                },
+                {
+                    urls: "turn:global.relay.metered.ca:80?transport=tcp",
+                    username: "ecc177c4ae968f7c9f665b04",
+                    credential: "Ab522JkPxZ+vuRC6",
+                },
+                {
+                    urls: "turn:global.relay.metered.ca:443",
+                    username: "ecc177c4ae968f7c9f665b04",
+                    credential: "Ab522JkPxZ+vuRC6",
+                },
+                {
+                    urls: "turns:global.relay.metered.ca:443?transport=tcp",
+                    username: "ecc177c4ae968f7c9f665b04",
+                    credential: "Ab522JkPxZ+vuRC6",
+                },
             ],
         });
         
@@ -143,7 +165,10 @@ peerConnection.current.onconnectionstatechange = () => {
     };
 
 
-    const createOffer = async (roomId: string) => {
+    const createOffer = async (
+        roomId: string,
+        targetSocketId: string
+        ) => {
 
         if (!peerConnection.current) return;
 
@@ -155,7 +180,7 @@ peerConnection.current.onconnectionstatechange = () => {
         console.log("Offer created");
 
         socket.emit("offer", {
-            roomId,
+            targetSocketId,
             offer,
         });
 

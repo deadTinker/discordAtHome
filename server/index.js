@@ -118,13 +118,17 @@ io.on("connection", (socket) => {
 
 
 
-    socket.on("offer", ({ roomId, offer }) => {
+    socket.on("offer", ({ targetSocketId, offer }) => {
 
-        console.log("Offer recieved");
+        console.log(
+            "Forwarding offer to",
+            targetSocketId
+        );
 
-        socket.to(roomId).emit("offer", {
+        io.to(targetSocketId).emit("offer", {
             
             offer,
+            from: socket.id,
 
         });
     });
