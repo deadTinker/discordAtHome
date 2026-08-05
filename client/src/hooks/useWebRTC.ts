@@ -15,6 +15,7 @@ function useWebRTC() {
 
     const initialised = useRef(false);
     
+    const pendingCandidates = useRef<RTCIceCandidateInit[]>([]);
 
 
 
@@ -165,12 +166,21 @@ peerConnection.current.onconnectionstatechange = () => {
         offer: RTCSessionDescriptionInit
     ) => {
 
-        if (!peerConnection) return;
+        if (!peerConnection.current) return;
 
         // Accept Browser A's Offer
         await peerConnection.current?.setRemoteDescription(offer);
 
         console.log("Remote offer accepted");
+
+        while (pendingCandidates.current.length > 0) {
+            const candidate = pendingCandidates.current.shift();
+
+            if (candidate) {
+                await peerConnection.current?.addIceCandidate(candidate);
+                console.log("Added queued ICE candidate");
+            }
+        }
 
         // Create our answer
         const answer = await peerConnection.current?.createAnswer();
@@ -209,11 +219,21 @@ peerConnection.current.onconnectionstatechange = () => {
 
             console.log("Answer recieved");
 
-            if (!peerConnection) return;
+            if (!peerConnection.current) return;
 
             await peerConnection.current?.setRemoteDescription(answer);
 
             console.log("Peer connection established !!");
+
+            
+            while (pendingCandidates.current.length > 0) {
+            const candidate = pendingCandidates.current.shift();
+
+            if (candidate) {
+                await peerConnection.current?.addIceCandidate(candidate);
+                console.log("Added queued ICE candidate");
+            }
+        }
 
         });
 
@@ -223,10 +243,16 @@ peerConnection.current.onconnectionstatechange = () => {
 
         socket.on("ice-candidate", async ({ candidate }) => {
 
-            console.log(
-                "Remote description?",
-                !!peerConnection.current?.remoteDescription
-            );
+            if (!peerConnection.current) return;
+
+            if (!peerConnection.current.remoteDescription) {
+                console.log("Queueing ICE candidate");
+
+                pendingCandidates.current.push(candidate);
+                return;
+            }
+
+            console.log("Adding ICE candidate");
 
             await peerConnection.current?.addIceCandidate(candidate);
 
