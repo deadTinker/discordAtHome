@@ -58,6 +58,9 @@ function useWebRTC() {
 
                 remoteAudio.current.srcObject = event.streams[0];
                 remoteAudio.current.volume = 1;
+
+                console.log(event.streams[0]);
+                console.log(event.streams[0].getAudioTracks());
             }
         };
 
