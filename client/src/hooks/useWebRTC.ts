@@ -59,8 +59,17 @@ function useWebRTC() {
                 remoteAudio.current.srcObject = event.streams[0];
                 remoteAudio.current.volume = 1;
 
+                remoteAudio.current.play()
+                .then(() => console.log("Audio playing"))
+                .catch(err => console.error("Play failed:", err));
+
                 console.log(event.streams[0]);
-                console.log(event.streams[0].getAudioTracks());
+                const track = event.streams[0].getAudioTracks()[0];
+
+                console.log(track);
+                console.log(track.enabled);
+                console.log(track.muted);
+                console.log(track.readyState);
             }
         };
 
