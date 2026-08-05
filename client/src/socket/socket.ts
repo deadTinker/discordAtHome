@@ -12,4 +12,6 @@ socket.on("welcome", (message) => {
     console.log("Server says:", message);
 });
 
+
+
 export default socket;
