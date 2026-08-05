@@ -25,7 +25,13 @@ function useWebRTC() {
           return;
       }
         
-        peerConnection.current = new RTCPeerConnection();
+        peerConnection.current = new RTCPeerConnection({
+            iceServers: [
+                {
+                    urls: "stun:stun.l.google.com:19302",
+                },
+            ],
+        });
         
         console.log("Peer Connection has been created");
 
