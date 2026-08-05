@@ -39,14 +39,16 @@ function useWebRTC() {
         peerConnection.current.onicecandidate = (event) => {
 
             if (event.candidate) {
-                
-                console.log("Sending ICE candidate");
+            console.log(
+                "ICE Candidate:",
+                event.candidate.candidate
+            );
 
-                socket.emit("ice-candidate", {
-                    roomId: currentRoomId.current,
-                    candidate: event.candidate,
-                });
-            }
+            socket.emit("ice-candidate", {
+                roomId: currentRoomId.current,
+                candidate: event.candidate,
+            });
+    }
         };
 
         peerConnection.current.oniceconnectionstatechange = () => {
@@ -221,11 +223,13 @@ peerConnection.current.onconnectionstatechange = () => {
 
         socket.on("ice-candidate", async ({ candidate }) => {
 
-            if (!peerConnection.current) return;
+            console.log(
+                "Remote description?",
+                !!peerConnection.current?.remoteDescription
+            );
 
-            console.log("Received ICE Candidate");
+            await peerConnection.current?.addIceCandidate(candidate);
 
-            await peerConnection.current.addIceCandidate(candidate);
         });
     };
    
