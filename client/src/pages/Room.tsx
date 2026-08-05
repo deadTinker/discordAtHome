@@ -107,7 +107,7 @@ function Room(){
         if (data.participant.socketId !== socket.id){
       // Existing user creates the offer
           await createOffer(
-            roomId!,
+            
           data.participant.socketId
           );
         }

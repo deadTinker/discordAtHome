@@ -166,7 +166,6 @@ peerConnection.current.onconnectionstatechange = () => {
 
 
     const createOffer = async (
-        roomId: string,
         targetSocketId: string
         ) => {
 
