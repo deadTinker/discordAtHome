@@ -70,11 +70,20 @@ function Room(){
 
 
     useEffect(() => {
-        
-      socket.emit("join-room", roomId);
-      
-      
 
+// Initialising Web RTC   
+      const setup = async () => {
+
+          await initialiseWebRTC(roomId!);
+          registerOfferListener(roomId!);
+          registerAnswerListener();
+          registeIceCandidateListener();
+
+          socket.emit("join-room", roomId);
+      };
+
+
+      setup();
 
 // Handlers Creation
 
@@ -86,17 +95,17 @@ function Room(){
 
       };
 
-      const handleUserJoined = (data: UserJoinedEvent) => {
+      const handleUserJoined = async (data: UserJoinedEvent) => {
 
-        console.count("handleUserJoined");
-        
         console.log("User joined:", data);
         
-        setParticipants(previous => {
-            console.log("Previous:", previous);
+        setParticipants(previous => [
+          ...previous,
+          data.participant
+      ]);
 
-            return [...previous, data.participant];
-      });
+      // Existing user creates the offer
+          await createOffer(roomId!);
       };
 
       const handleUserLeft = (data: UserLeftEvent) => {
@@ -138,12 +147,7 @@ function Room(){
       socket.on("mic-changed", handleMicChanged);
 
       
- // Initialising Web RTC   
 
-      initialiseWebRTC(roomId!);
-      registerOfferListener(roomId!);
-      registerAnswerListener();
-      registeIceCandidateListener();
 
 
 // Cleanup 
