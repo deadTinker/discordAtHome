@@ -1,0 +1,62 @@
+body{
+  margin: 0;
+  background: #f5efd7;
+}
+
+.home{
+  min-height: 100vh;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+}
+
+.window{
+  width: 500px;
+  max-width: 90vw;
+  
+  border: 2px solid #613924;
+
+  background: #f5efd7;
+}
+
+.title-bar{
+  height: 40px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 12px;
+
+  border-bottom: 2px solid #613924;
+}
+
+.content{
+  padding: 25px;
+}
+
+.content button{
+  display: block;
+  margin: 20px auto 0;
+
+  width: 180px;
+  height: 40px;
+  
+}
+
+.field{
+  margin-bottom: 20px;
+}
+
+.field label{
+  display: block;
+  margin-bottom: 8px;
+}
+
+button:hover{
+    cursor:pointer;
+    transform: translateY(-2px);
+}

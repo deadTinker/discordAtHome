@@ -21,6 +21,8 @@ function useWebRTC() {
 
     const createPeerConnection = () => {
 
+        
+
 
       if (peerConnection.current) {
           return;
@@ -327,6 +329,24 @@ peerConnection.current.onconnectionstatechange = () => {
     };
 
 
+        const cleanup = () => {
+
+            peerConnection.current?.close();
+            peerConnection.current = null;
+
+            localStream.current?.getTracks().forEach(track => track.stop());
+            localStream.current = null;
+
+            remoteAudio.current = null;
+
+            pendingCandidates.current = [];
+
+            initialised.current = false;
+
+            currentRoomId.current = "";
+        }
+
+
     return {
         initialiseWebRTC,
         createOffer,
@@ -337,6 +357,7 @@ peerConnection.current.onconnectionstatechange = () => {
         localStream,
         remoteAudio,
         toggleMic,
+        cleanup,
         
     };
 }

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import "./Home.css";
+
 
 
 
@@ -29,32 +31,56 @@ function Home() {
 
         <div className="home">
 
-          <h1>Cordisk.exe</h1>
+          <div className="window">
 
+            <div className="title-bar">
+              
+              <span>Cordisk.exe</span>
 
+              <div className="window-buttons">
 
-          <p>Username</p>
+              <span>_</span>
+              <span>□</span>
+              <span>✕</span>
+              
+              </div>
+          </div>
+
+          <div className="content">
+
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+
+          <div className="field">
+
+          <label>Username</label>
 
           <input
               value = {username}
               onChange={(e) => setUsername(e.target.value)}
           />
 
+          </div>
 
 
-          <p>Room ID</p>
+          <div className="field">
+          <label>Room ID</label>
           
           <input
               value = {roomId}
               onChange={(e) => setRoomId(e.target.value)}
           />
 
+          </div>
+
           <button onClick={joinRoom}>
               Join Room
           </button>
 
-          
-
+            </div>
+          </div>
         </div>
     );
 

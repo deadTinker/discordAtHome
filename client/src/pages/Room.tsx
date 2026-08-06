@@ -8,6 +8,8 @@ import useWebRTC from "../hooks/useWebRTC";
 
 import "./Room.css";
 
+import { useNavigate } from "react-router-dom";
+
 
 // Interfaces
 
@@ -48,6 +50,18 @@ function Room(){
 
     const [participants, setParticipants] = useState<Participant[]>([]);
 
+    const navigate = useNavigate();
+
+    const leaveRoom = () => {
+
+        cleanup();
+
+        socket.disconnect();
+
+        navigate("/");
+
+      };
+
     const { 
 
         initialiseWebRTC,
@@ -64,6 +78,8 @@ function Room(){
 
         toggleMic,
 
+        cleanup,
+
       } = useWebRTC();
 
    
@@ -78,7 +94,10 @@ function Room(){
 // Initialising Web RTC   
       const setup = async () => {
 
+          socket.connect();
+
           await initialiseWebRTC(roomId!);
+
           registerOfferListener(roomId!);
           registerAnswerListener();
           registeIceCandidateListener();
@@ -152,6 +171,9 @@ function Room(){
       };
 
 
+      
+
+
 // Registering Handlers
       socket.on("room-state", handleRoomState);
       socket.on("user-joined", handleUserJoined);
@@ -171,6 +193,8 @@ function Room(){
         socket.off("offer");
         socket.off("answer");
         socket.off("ice-candidate");
+
+        
       };
 
 
@@ -186,12 +210,27 @@ function Room(){
           <div className="title-bar">
             <span> Cordisk.exe - Room: {roomId} </span>
 
+            <span></span>
+
             <div className="window-buttons">
               <span>_</span>
               <span>□</span>
               <span>✕</span>
             </div>
           </div>
+
+          
+
+          <div className="room-info">
+
+
+            <span> 👥 {participants.length} Participant{participants.length !==1 ? "s" : ""}
+            </span>
+
+            
+          </div>
+
+
 
           <div className="content">
 
@@ -245,6 +284,7 @@ function Room(){
               <div className="toolbar">
 
                 <button onClick={toggleMic}>
+                  
                   {participants.find(user => user.socketId === socket.id)?.mic
                     ? "🔊"
                     : "🔈"}
@@ -258,7 +298,7 @@ function Room(){
                   🖥️
                 </button>
 
-                <button>
+                <button onClick={leaveRoom}>
                   📞
                 </button>
 

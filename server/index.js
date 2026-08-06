@@ -42,6 +42,9 @@ io.on("connection", (socket) => {
 // Join Room Handler
     socket.on("join-room", ({roomId, username}) => {
 
+        console.log("Connected:", socket.id);
+        console.log("Clients:", io.engine.clientsCount);
+
         socket.join(roomId);
 
         if (!rooms[roomId]) {
@@ -163,8 +166,13 @@ io.on("connection", (socket) => {
     
     socket.on("disconnect", () => {
 
+        
+
         console.log("Disconnecting:", socket.id);
         console.log("Before:", rooms);
+
+        console.log("Disconnected:", socket.id);
+    console.log("Clients:", io.engine.clientsCount);
 
         const roomId = socketToRoom[socket.id];
 
