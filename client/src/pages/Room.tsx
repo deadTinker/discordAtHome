@@ -10,6 +10,8 @@ import "./Room.css";
 
 import { useNavigate } from "react-router-dom";
 
+import { playSound } from "../utils/playSound";
+
 
 // Interfaces
 
@@ -283,8 +285,11 @@ function Room(){
         
               <div className="toolbar">
 
-                <button onClick={toggleMic}>
-                  
+                <button onClick={() => {
+                    playSound("plop.mp3");
+                    toggleMic();
+                }}
+                  >
                   {participants.find(user => user.socketId === socket.id)?.mic
                     ? "🔊"
                     : "🔈"}
@@ -298,7 +303,11 @@ function Room(){
                   🖥️
                 </button>
 
-                <button onClick={leaveRoom}>
+                <button onClick={() => {
+                    playSound("plop.mp3");
+                    leaveRoom();
+                }}
+                >
                   📞
                 </button>
 

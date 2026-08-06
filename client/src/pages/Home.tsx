@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import "./Home.css";
 
+import { playSound } from "../utils/playSound";
+
 
 
 
@@ -75,8 +77,15 @@ function Home() {
 
           </div>
 
-          <button onClick={joinRoom}>
-              Join Room
+          <button onClick={() =>{
+
+                playSound("join.mp3");
+
+                joinRoom();
+          }}
+              
+              >
+                Join Room
           </button>
 
             </div>
