@@ -6,6 +6,8 @@ import socket from "../socket/socket";
 
 import useWebRTC from "../hooks/useWebRTC";
 
+import "./Room.css";
+
 
 // Interfaces
 
@@ -59,6 +61,8 @@ function Room(){
         registeIceCandidateListener,
 
         remoteAudio,
+
+        toggleMic,
 
       } = useWebRTC();
 
@@ -172,49 +176,52 @@ function Room(){
 
 
     return (
-      <>
-      <h1> Room Page </h1>
-      <h2> Room ID: {roomId} </h2>
 
-      <ul>
-        {participants.map((user) => (
-          <li key={user.socketId}>
+      <div className="Room">
+        <div className="window">
 
-            <strong>{user.username}</strong>
+          <div className="title-bar">
+            <span> Cordisk.exe - Room: {roomId} </span>
 
-            <br />
+            <div className="window-buttons">
+              <span>_</span>
+              <span>□</span>
+              <span>✕</span>
+            </div>
+          </div>
 
-            🎤 {user.mic ? "On" : "Off"}
+          <div className="content">
 
-            <br />
+           <ul>
+            {participants.map((user) => (
+              <li key={user.socketId}>
 
-            📷 {user.camera ? "On" : "Off"}
+                <strong>{user.username}</strong>
 
-            <br />
+                <br />
 
-            🖥️ {user.screenShare ? "On" : "Off"}
+                🎤 {user.mic ? "On" : "Off"}
 
-            <br /><br />
+                <br />
 
-            </li>
-          ))}
+                📷 {user.camera ? "On" : "Off"}
+
+                <br />
+
+                🖥️ {user.screenShare ? "On" : "Off"}
+
+                <br /><br />
+
+                </li>
+              ))}
 
       </ul>
 
-
-
-      {/* <h2> Participants: {participants.length} </h2> */}
-
-
-      <button onClick={() => socket.emit("toggle-mic")}>
+      <button onClick={toggleMic}>
         {participants.find(user => user.socketId === socket.id)?.mic
         ? "Mute"
         : "Unmute"}
       </button>
-
-      <br></br>
-
-    
 
 
       <audio
@@ -222,9 +229,14 @@ function Room(){
           autoPlay
       />
 
+          </div>
 
+          
 
-      </>
+          
+      
+        </div>
+      </div>
     );
 }
 

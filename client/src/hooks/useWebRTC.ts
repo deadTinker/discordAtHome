@@ -309,6 +309,24 @@ peerConnection.current.onconnectionstatechange = () => {
 
 
 
+    const toggleMic = () => {
+        
+        if (!localStream.current) return;
+
+        const track = localStream.current.getAudioTracks()[0];
+        
+
+        track.enabled = !track.enabled;
+        console.log("Track enabled:", track.enabled);
+
+        socket.emit("toggle-mic", {
+            
+            mic: track.enabled,
+
+        });
+    };
+
+
     return {
         initialiseWebRTC,
         createOffer,
@@ -318,6 +336,7 @@ peerConnection.current.onconnectionstatechange = () => {
         peerConnection,
         localStream,
         remoteAudio,
+        toggleMic,
         
     };
 }

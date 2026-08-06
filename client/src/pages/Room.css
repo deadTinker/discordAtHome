@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+    background: #1f1f1f;
+    color: white;
+}
+
+.Room{
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+}
+
+.window{
+  width: 900px;
+  border: 2px solid white;
+  padding: 20px;
+}
+
+.title-bar{
+  height: 40px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 12px;
+
+  border-bottom: 2px solid white;
+}
+
+.window-buttons{
+  display: flex;
+  gap: 12px;
+}
+
+.content{
+  padding: 24px;
+}

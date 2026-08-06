@@ -94,7 +94,7 @@ io.on("connection", (socket) => {
 
 
 
-    socket.on("toggle-mic", () => {
+    socket.on("toggle-mic", ({ mic }) => {
 
         const roomId = socketToRoom[socket.id];
 
@@ -106,7 +106,7 @@ io.on("connection", (socket) => {
 
         if (!participant) return;
 
-        participant.mic = !participant.mic;
+        participant.mic = mic;
         console.log(participant);
 
         io.to(roomId).emit("mic-changed", {
