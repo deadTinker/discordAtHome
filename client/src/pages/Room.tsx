@@ -83,7 +83,10 @@ function Room(){
           registerAnswerListener();
           registeIceCandidateListener();
 
-          socket.emit("join-room", roomId);
+          socket.emit("join-room", {
+            roomId,
+            username: localStorage.getItem("username"),
+          });
       };
 
 
@@ -192,36 +195,75 @@ function Room(){
 
           <div className="content">
 
-           <ul>
+
+
+          
+           <div className="participants">
             {participants.map((user) => (
-              <li key={user.socketId}>
 
-                <strong>{user.username}</strong>
 
-                <br />
+              
 
-                🎤 {user.mic ? "On" : "Off"}
+              <div
+                  className="participant-card"
+                  key = {user.socketId}
+                  >
 
-                <br />
+                <div className="avatar">
+                  ?
+                  </div>
 
-                📷 {user.camera ? "On" : "Off"}
+                <div className="username"> 
 
-                <br />
+                  {user.username}
 
-                🖥️ {user.screenShare ? "On" : "Off"}
+                </div>
 
-                <br /><br />
+                <div className="status">
 
-                </li>
+                <div>🎤 {user.mic ? "On" : "Off"}</div>
+
+                
+
+                <div>📷 {user.camera ? "On" : "Off"}</div>
+
+                
+
+                <div>🖥️ {user.screenShare ? "On" : "Off"}</div>
+
+
+                </div>
+                </div>
+                
               ))}
+              </div>
 
-      </ul>
+    
 
-      <button onClick={toggleMic}>
-        {participants.find(user => user.socketId === socket.id)?.mic
-        ? "Mute"
-        : "Unmute"}
-      </button>
+
+        
+              <div className="toolbar">
+
+                <button onClick={toggleMic}>
+                  {participants.find(user => user.socketId === socket.id)?.mic
+                    ? "🔊"
+                    : "🔈"}
+                </button>
+
+                <button disabled>
+                  📷
+                </button>
+
+                <button disabled>
+                  🖥️
+                </button>
+
+                <button>
+                  📞
+                </button>
+
+              </div>
+        
 
 
       <audio

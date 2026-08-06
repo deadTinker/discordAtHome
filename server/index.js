@@ -40,7 +40,7 @@ io.on("connection", (socket) => {
 
 
 // Join Room Handler
-    socket.on("join-room", (roomId) => {
+    socket.on("join-room", ({roomId, username}) => {
 
         socket.join(roomId);
 
@@ -56,7 +56,7 @@ io.on("connection", (socket) => {
 
             rooms[roomId].push({
                 socketId: socket.id,
-                username: "Guest",
+                username: username || "Guest",
                 mic: true,
                 camera: false,
                 screenShare: false,
